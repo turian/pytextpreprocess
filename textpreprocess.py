@@ -5,11 +5,14 @@ import common.tokenizer
 
 from nltk import word_tokenize
 from nltk.stem.porter import PorterStemmer
-from nltk.corpus import stopwords
+#from nltk.corpus import stopwords
 
 import string
+import re
 
-def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, stem=True, lowercase=True, removestopwords=True):
+stoplist = [string.strip(l) for l in open("english.stop").readlines()]
+
+def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True):
     """
     Note: For html2text, one could also use NCleaner (common.html2text.batch_nclean)
     Note: One could improve the sentence tokenization, by using the
@@ -42,13 +45,14 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
     if lowercase:
         txtwords = [[string.lower(w) for w in t] for t in txtwords]
 
+    if removestopwords:
+#        stoplist = stopwords.words("english")
+        alphare = re.compile("[A-Za-z]")
+        txtwords = [[w for w in t if w not in stoplist and alphare.search(w)] for t in txtwords]
+
     if stem:
         stemmer = PorterStemmer()
         txtwords = [[stemmer.stem(w) for w in t] for t in txtwords]
-
-    if removestopwords:
-        stoplist = stopwords.words("english")
-        txtwords = [[w for w in t if w not in stoplist] for t in txtwords]
 
     txts = [string.join(words) for words in txtwords]
 
