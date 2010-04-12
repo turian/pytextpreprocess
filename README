@@ -1,0 +1,11 @@
+pytextpreprocess
+
+    by Joseph Turian
+
+Preprocess text for NLP (tokenizing, lowercasing, stemming, sentence splitting, etc.)
+
+REQUIREMENTS:
+    * My Python common library:
+        http://github.com/turian/common
+    and sub-requirements thereof.
+    * NLTK, for word tokenization
