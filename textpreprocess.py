@@ -7,10 +7,12 @@ from nltk import word_tokenize
 from nltk.stem.porter import PorterStemmer
 #from nltk.corpus import stopwords
 
-import string
+import os.path
 import re
+import string
 
-stoplist = [string.strip(l) for l in open("english.stop").readlines()]
+STOPFILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "english.stop")
+stoplist = [string.strip(l) for l in open(STOPFILE).readlines()]
 
 def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True):
     """
