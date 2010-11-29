@@ -11,7 +11,7 @@ import os.path
 import re
 import string
 
-STOPFILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "english.stop")
+STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file__))), "english.stop")
 stoplist = None
 
 def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True):
