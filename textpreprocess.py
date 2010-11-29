@@ -12,7 +12,7 @@ import re
 import string
 
 STOPFILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "english.stop")
-stoplist = [string.strip(l) for l in open(STOPFILE).readlines()]
+stoplist = None
 
 def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True):
     """
@@ -22,6 +22,7 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
     Note: We use the Porter stemmer. (Optimization: Shouldn't rebuild
     the PorterStemmer object each time this function is called.)
     """
+    global stoplist
     if converthtml:
         txt = common.html2text.html2text(txt)
 
@@ -49,6 +50,8 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
 
     if removestopwords:
 #        stoplist = stopwords.words("english")
+        if stoplist is None:
+            stoplist = [string.strip(l) for l in open(STOPFILE).readlines()]
         alphare = re.compile("[A-Za-z]")
         txtwords = [[w for w in t if w not in stoplist and alphare.search(w)] for t in txtwords]
 

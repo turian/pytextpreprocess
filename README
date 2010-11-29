@@ -9,6 +9,10 @@ REQUIREMENTS:
         http://github.com/turian/common
     and sub-requirements thereof.
     * NLTK, for word tokenization
+        e.g.
+            apt-get install python-nltk
+
+    * Splitta if you want to sentence tokenize
 
 The English stoplist is from:
     http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop
