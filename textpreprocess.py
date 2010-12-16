@@ -11,10 +11,10 @@ import os.path
 import re
 import string
 
-STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file__))), "english.stop")
+#STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file__))), "english.stop")
 stoplist = None
 
-def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True):
+def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklinks=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True, removenonalphanumericchars=True):
     """
     Note: For html2text, one could also use NCleaner (common.html2text.batch_nclean)
     Note: One could improve the sentence tokenization, by using the
@@ -23,6 +23,9 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
     the PorterStemmer object each time this function is called.)
     """
     global stoplist
+
+    STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file__))), "english.stop")
+
     if converthtml:
         txt = common.html2text.html2text(txt)
 
@@ -52,12 +55,15 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
 #        stoplist = stopwords.words("english")
         if stoplist is None:
             stoplist = [string.strip(l) for l in open(STOPFILE).readlines()]
-        alphare = re.compile("[A-Za-z]")
-        txtwords = [[w for w in t if w not in stoplist and alphare.search(w)] for t in txtwords]
+        txtwords = [[w for w in t if w not in stoplist] for t in txtwords]
 
     if stem:
         stemmer = PorterStemmer()
         txtwords = [[stemmer.stem(w) for w in t] for t in txtwords]
+
+    if removenonalphanumericchars:
+        alphanumre = re.compile("[\w\-\' ]")
+        txtwords = [[string.join([c for c in w if alphanumre.search(c) is not None], "") for w in t] for t in txtwords]
 
     txts = [string.join(words) for words in txtwords]
 
