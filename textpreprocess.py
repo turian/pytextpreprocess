@@ -3,7 +3,9 @@
 import common.html2text
 import common.tokenizer
 
-from nltk import word_tokenize
+#from nltk import word_tokenize
+from nltk.tokenize import WordPunctTokenizer    # This is better for sentences containing unicode, like: u"N\u00faria Espert"
+word_tokenize = WordPunctTokenizer().tokenize
 from nltk.stem.porter import PorterStemmer
 #from nltk.corpus import stopwords
 
@@ -60,7 +62,7 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
         txtwords = [[stemmer.stem(w) for w in t] for t in txtwords]
 
     if removenonalphanumericchars:
-        alphanumre = re.compile("[\w\-\' ]")
+        alphanumre = re.compile("[\w\-\' ]", re.UNICODE)
         txtwords = [[string.join([c for c in w if alphanumre.search(c) is not None], "") for w in t] for t in txtwords]
 
     txts = [string.join(words) for words in txtwords]
