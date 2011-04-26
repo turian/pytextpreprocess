@@ -61,6 +61,8 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklink
         stemmer = PorterStemmer()
         txtwords = [[stemmer.stem(w) for w in t] for t in txtwords]
 
+    # TODO: Maybe remove Unicode accents? http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
+
     if removenonalphanumericchars:
         alphanumre = re.compile("[\w\-\' ]", re.UNICODE)
         txtwords = [[string.join([c for c in w if alphanumre.search(c) is not None], "") for w in t] for t in txtwords]
