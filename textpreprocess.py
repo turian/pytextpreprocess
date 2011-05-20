@@ -16,7 +16,7 @@ import string
 STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file__))), "english.stop")
 stoplist = None
 
-def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklines=True, replacehypenbyspace=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True, removenonalphanumericchars=True):
+def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklines=True, replacehyphenbyspace=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True, removenonalphanumericchars=True):
     """
     Note: For html2text, one could also use NCleaner (common.html2text.batch_nclean)
     Note: One could improve the sentence tokenization, by using the
@@ -42,7 +42,7 @@ def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblankline
                 newtxts.append(t)
         txts = newtxts
 
-    if replacehypenbyspace:
+    if replacehyphenbyspace:
         txts = [t.replace("-", " ") for t in txts]
 
     if wordtokenize:
