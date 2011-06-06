@@ -6,8 +6,11 @@ import common.tokenizer
 #from nltk import word_tokenize
 from nltk.tokenize import WordPunctTokenizer    # This is better for sentences containing unicode, like: u"N\u00faria Espert"
 word_tokenize = WordPunctTokenizer().tokenize
-from nltk.stem.porter import PorterStemmer
 #from nltk.corpus import stopwords
+
+# Use the PyStemmer stemmer, since it is written in C and is thus much faster than the NLTK porter stemmer
+import Stemmer
+#from nltk.stem.porter import PorterStemmer
 
 import os.path
 import re
@@ -17,6 +20,10 @@ STOPFILE = os.path.join(os.path.abspath(os.path.dirname(os.path.realpath(__file_
 stoplist = None
 
 _wsre = re.compile("\s+")
+_alphanumre = re.compile("[\w\-\' ]", re.UNICODE)
+
+#stemmer = PorterStemmer()
+stemmer = Stemmer.Stemmer("english")
 
 def textpreprocess(txt, converthtml=True, sentencetokenize=True, removeblanklines=True, replacehyphenbyspace=True, wordtokenize=True, lowercase=True, removestopwords=True, stem=True, removenonalphanumericchars=True, stemlastword=False, stripallwhitespace=False):
     """
@@ -85,16 +92,16 @@ def _removestopwords(txtwords):
     return [[w for w in t if w not in stoplist] for t in txtwords]
 
 def _stem(txtwords):
-    stemmer = PorterStemmer()
-    return [[stemmer.stem(w) for w in t] for t in txtwords]
+#    stemmer = PorterStemmer()
+#    return [[stemmer.stem(w) for w in t] for t in txtwords]
+    return [stemmer.stemWords(t) for t in txtwords]
 
 def _removenonalphanumericchars(txtwords):
-    alphanumre = re.compile("[\w\-\' ]", re.UNICODE)
-    return [[string.join([c for c in w if alphanumre.search(c) is not None], "") for w in t] for t in txtwords]
+    return [[string.join([c for c in w if _alphanumre.search(c) is not None], "") for w in t] for t in txtwords]
 
 def _stemlastword(txtwords):
-    stemmer = PorterStemmer()
-    return [t[:-1] + [stemmer.stem(t[-1])] for t in txtwords if len(t) > 0]
+#    return [t[:-1] + [stemmer.stem(t[-1])] for t in txtwords if len(t) > 0]
+    return [t[:-1] + [stemmer.stemWord(t[-1])] for t in txtwords if len(t) > 0]
 
 def _stripallwhitespace(txts):
     return [_wsre.sub("", txt) for txt in txts]
