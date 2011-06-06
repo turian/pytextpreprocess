@@ -81,7 +81,7 @@ def _removestopwords(txtwords):
     global stoplist
 #    stoplist = stopwords.words("english")
     if stoplist is None:
-        stoplist = [string.strip(l) for l in open(STOPFILE).readlines()]
+        stoplist = frozenset([string.strip(l) for l in open(STOPFILE).readlines()])
     return [[w for w in t if w not in stoplist] for t in txtwords]
 
 def _stem(txtwords):
