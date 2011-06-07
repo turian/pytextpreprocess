@@ -1,6 +1,8 @@
 pytextpreprocess
+================
 
-    by Joseph Turian
+written by Joseph Turian
+released under a BSD license
 
 Preprocess text for NLP (tokenizing, lowercasing, stemming, sentence splitting, etc.)
 
